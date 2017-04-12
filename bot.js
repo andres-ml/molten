@@ -21,7 +21,6 @@ class Bot {
                 let commandString = message.content.substring(this.config.prefix.length)
                 let reply = this.run(commandString, message)
                 message.channel.sendMessage(reply)
-                console.log(message)
             }
         })
 
@@ -29,7 +28,12 @@ class Bot {
     }
 
     run(commandString, message) {
-        let reply = this.commander.run(commandString)
+        let reply
+        try {
+            reply = this.commander.run(commandString)
+        } catch (error) {
+            reply = error
+        }
         reply += '\n' + message.member
 
         return reply
