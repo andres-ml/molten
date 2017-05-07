@@ -1,5 +1,5 @@
-var Discord         = require('discord.js')
-var Commander       = require('./lib/commander.js')
+var Discord     = require('discord.js')
+var Dispatcher  = require('./dispatcher.js')
 
 class Bot {
 
@@ -9,35 +9,29 @@ class Bot {
     }
 
     initialize() {
-        this.commander  = new Commander()
-        this.bot        = new Discord.Client()
+        this.bot = new Discord.Client()
+        this.dispatcher = new Dispatcher(this.bot)
 
-        this.commander.add('test', (data) => {
-            return JSON.stringify(data)
-        })
-
-        this.bot.on('message', (message) => {
+        this.bot.on('message', message => {
             if (message.content.indexOf(this.config.prefix) === 0) {
-                let commandString = message.content.substring(this.config.prefix.length)
-                let reply = this.run(commandString, message)
-                message.channel.sendMessage(reply)
+                let command = message.content.substring(this.config.prefix.length)
+                this.run(command, message)
             }
         })
 
         this.bot.login(this.config.auth)
     }
 
-    run(commandString, message) {
-        let reply
+    run(command, message) {
         try {
-            reply = this.commander.run(commandString)
-        } catch (error) {
-            reply = error
+            this.dispatcher.run(command, message)
         }
-        reply += '\n' + message.member
-
-        return reply
+        catch (error) {
+            let reply = "I couldn't understand your request (" + error.message + "). Try using the help: " + this.config.prefix + 'help'
+            message.channel.send(reply)
+        }
     }
+
 
 }
 
