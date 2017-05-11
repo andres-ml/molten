@@ -19,7 +19,6 @@ class Time extends Piece {
          * Sends a message after <seconds> seconds
          */
         this.addCommand('in <seconds> <message>', (data, context) => {
-            console.log(data.message)
             this.schedule(context.message.channel, data.message, data.seconds)
         })
 
