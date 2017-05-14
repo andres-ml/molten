@@ -1,3 +1,5 @@
 config.json
 node_modules
 design/
+pieces/test.js
+pieces/test/*

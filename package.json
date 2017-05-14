@@ -1,7 +1,7 @@
 {
-  "name": "discord-bot",
+  "name": "molten",
   "version": "1.0.0",
-  "description": "Discord Bot",
+  "description": "Modular discord bot",
   "main": "main.js",
   "dependencies": {
     "discord.js": "^11.1.0"

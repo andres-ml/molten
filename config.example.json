@@ -1,4 +1,5 @@
 {
     "prefix": "bot ",
-    "auth": "your discord api key (https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)"
+    "auth": "your discord api key (https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)",
+    "description": "a very fancy bot"
 }

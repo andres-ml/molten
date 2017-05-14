@@ -1,6 +1,7 @@
 var Piece   = require.main.require('./piece.js')
+var dedent  = require('dedent-js')
 
-class Test extends Piece {
+class Dev extends Piece {
 
     key() {
         return ''
@@ -53,8 +54,53 @@ class Test extends Piece {
             context.message.channel.send(`Aliased ${command} to '${data.alias}'`)
         })
 
+
+        /**
+         * Sends help to user that requests
+         */
+        this.addCommand('help', (data, context) => {
+            let help = this.buildHelp()
+            context.message.author.send('```' + help + '```')
+        }, {
+            description: 'print this help'
+        })
+
+    }
+
+    buildHelp(piece = null) {
+        let prefix = this.dispatcher.config.prefix
+        if (piece !== null) prefix = piece.piece.key()
+        if (!prefix) prefix = '(no prefix)'
+
+        let description = this.dispatcher.config.description
+        if (piece !== null) description = piece.piece.description()
+
+        let commands = []
+        if (piece !== null) commands = piece.piece.getCommands()
+
+        let parts = this.dispatcher.pieces
+        if (piece !== null) parts = piece.parts
+
+        let header = [prefix, description].filter(n => n).join(' - ')
+        let getCommandHelp = command => {
+            let description = 'description' in command.options ? command.options.description : null
+            return `${command.command}${description ? ' - ' + description : ''}`
+        }
+
+        let getPartHelp = part => {
+            return this.buildHelp(part).split('\n').join('\n    ')
+        }
+
+        let escape = '```'
+        let help = dedent`
+            ${header}
+            ${commands.map(getCommandHelp).join('\n')}
+            ${parts.map(getPartHelp).map(help => '  ' + help).join('\n')}
+        `
+
+        return help
     }
 
 }
 
-module.exports = Test
+module.exports = Dev

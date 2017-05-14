@@ -4,9 +4,13 @@ class Piece {
         return ''
     }
 
+    description() {
+        return ''
+    }
+
     constructor(dispatcher) {
         this.dispatcher = dispatcher
-        this.commands = []
+        this.commands   = []
         this.initialize()
     }
 
@@ -14,10 +18,11 @@ class Piece {
 
     }
 
-    addCommand(command, callback) {
+    addCommand(command, callback, options = {}) {
         this.commands.push({
             command: command,
-            callback: callback
+            callback: callback,
+            options: options,
         })
     }
 

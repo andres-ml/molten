@@ -4,7 +4,11 @@ var Discord = require('discord.js')
 class BladeAndSoul extends Piece {
 
     key() {
-        return ''
+        return 'bns'
+    }
+
+    description() {
+        return 'Blade and Soul utilities'
     }
 
     hmcToGold(hmc, rate) {
@@ -35,6 +39,8 @@ class BladeAndSoul extends Piece {
             context.message.channel.send('', {
                 embed: embed
             })
+        }, {
+            description: 'Currency exchange calculator. hmc is the amount of coins you need, rate the ratio at which you want to sell them'
         })
 
     }
