@@ -3,12 +3,12 @@
 
 discord.js-based modular Discord bot
 
-Molten is a self-hosted bot that you can easily extend by defining *pieces*. Pieces allow fast definition of commands or add listen to any event. Pieces can be nested one within another to automatically group commands under a common prefix.
+Molten is a self-hosted bot that you can easily extend by defining *pieces*. Pieces allow fast definition of commands or add functionalities by listening to events. Pieces can be nested one within another to automatically group commands under a common prefix.
 
 Molten comes packed with some default pieces, which offer functionalities like:
 * Polls
 * Rolling
-* Time-related commands
+* Timing commands
 * Auto help generation
 * Command aliasing
 
@@ -16,7 +16,7 @@ Molten comes packed with some default pieces, which offer functionalities like:
 
 1. This bot runs in Node.js; download the source code and run `npm install` to install the
 required dependencies.
-2. Rename `config.example.json` to `config.json` and edit it with your own settings.
+2. Rename `config.example.json` to `config.json` and edit it with your own parameters.
 3. Run the bot with `nodejs main.js`
 
 ---
@@ -24,7 +24,7 @@ required dependencies.
 ## Creating pieces
 
 Creating and adding a piece to the bot is as simple as adding a new file to `pieces`.
-All .js files under the `pieces` directory will be loaded upon bot start or reload.
+All `.js` files under the `pieces` directory will be loaded upon bot start or reload.
 
 Pieces have the following structure:
 ```js
@@ -95,7 +95,7 @@ this.addCommand('say|echo [words]*', fn)
 
 The callback function takes two arguments: `data` and `context`. `data` is an object containing the arguments of the command, and `context` another object containing information about the context of our command, in this case a discord.js Message.
 
-For example, if we our command is `sum <foo> [bar] [baz]*`:
+For example, if we have the command `sum <foo> [bar] [baz]*`:
 * `sum 1` would make `data` be `{ foo: '1', bar: null, baz: [] }`
 * `sum 1 2 3 4 5` would make `data` be `{ foo: '1', bar: '2', baz: ['3', '4', '5'] }`
 * `sum` would give an error (since it's missing a required argument)
@@ -136,7 +136,7 @@ pieces/
 
 Would load `misc.js`, `funny.js`, `stuff.js` and `polls.js`.
 
-Nesting allows grouping functionalities under a specific prefix. For example, if `misc.js` defines its key as `foo`, all of its commands and its subpieces' commands will have the `foo` key prefixed.
+Nesting allows grouping functionalities under a specific prefix. For example, if `misc.js` defines its key as `foo`, all of its commands and its subpieces' commands will require the `foo` prefix.
 
 Nesting can also be used without defining a key, and will work as if all the pieces were siblings.
 
