@@ -6,6 +6,10 @@ class Time extends Piece {
         return 'time'
     }
 
+    description() {
+        return 'Delay and schedule messages'
+    }
+
     schedule(channel, message, secondsFromNow) {
         if (secondsFromNow > 0) {
             channel.send(`Sending message ${message} in ${secondsFromNow} seconds`)
@@ -20,6 +24,8 @@ class Time extends Piece {
          */
         this.addCommand('in <seconds> <message>', (data, context) => {
             this.schedule(context.message.channel, data.message, data.seconds)
+        }, {
+            description: 'Sends message after x seconds'
         })
 
         /**
@@ -40,6 +46,8 @@ class Time extends Piece {
             let differenceInMiliseconds = date.getTime() - now.getTime()
 
             this.schedule(context.message.channel, data.message, differenceInMiliseconds / 1000)
+        }, {
+            description: 'Sends message at specific time today, e.g. send 12:10 "Clock says 10 past 12"'
         })
 
         this.repeated = {}
@@ -58,6 +66,8 @@ class Time extends Piece {
                 }
             }
             repeat()
+        }, {
+            description: 'Sends message every x minutes'
         })
 
         /**
@@ -84,6 +94,8 @@ class Time extends Piece {
             context.message.channel.send(`Deleted scheduled message '${info.message}'`)
             clearTimeout(info.handler)
             delete this.repeated[data.id]
+        }, {
+            description: 'Stops repeated message with specified id. If no id specified, lists all repeated messages'
         })
 
     }

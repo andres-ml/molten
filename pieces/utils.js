@@ -1,10 +1,14 @@
 var Piece   = require.main.require('./piece.js')
 var dedent  = require('dedent-js')
 
-class Dev extends Piece {
+class Utils extends Piece {
 
     key() {
         return ''
+    }
+
+    description() {
+        return 'Utilities'
     }
 
     initialize() {
@@ -52,6 +56,8 @@ class Dev extends Piece {
             })
 
             context.message.channel.send(`Aliased ${command} to '${data.alias}'`)
+        }, {
+            description: 'Aliases a command. E.g: alias sendIn1h "time in 3600"'
         })
 
 
@@ -60,7 +66,7 @@ class Dev extends Piece {
          */
         this.addCommand('help', (data, context) => {
             let help = this.buildHelp()
-            context.message.author.send('```' + help + '```')
+            context.message.channel.send('```' + help + '```')
         }, {
             description: 'print this help'
         })
@@ -70,7 +76,6 @@ class Dev extends Piece {
     buildHelp(piece = null) {
         let prefix = this.dispatcher.config.prefix
         if (piece !== null) prefix = piece.piece.key()
-        if (!prefix) prefix = '(no prefix)'
 
         let description = this.dispatcher.config.description
         if (piece !== null) description = piece.piece.description()
@@ -81,19 +86,29 @@ class Dev extends Piece {
         let parts = this.dispatcher.pieces
         if (piece !== null) parts = piece.parts
 
+
+        let pad = string => {
+            const padLength = 4;
+            let times = Math.max(1, 5 - Math.floor(string.length / 25))
+            return padLength * times + string.length % 4
+
+        }
+
         let header = [prefix, description].filter(n => n).join(' - ')
         let getCommandHelp = command => {
             let description = 'description' in command.options ? command.options.description : null
-            return `${command.command}${description ? ' - ' + description : ''}`
+            return `~ ${command.command}${description ? '\n    ' + description : ''}`
         }
 
         let getPartHelp = part => {
-            return this.buildHelp(part).split('\n').join('\n    ')
+            return this.buildHelp(part).split('\n').join('\n  ')
         }
 
         let escape = '```'
         let help = dedent`
+            ${'-'.repeat(header.length)}
             ${header}
+            ${'-'.repeat(header.length)}
             ${commands.map(getCommandHelp).join('\n')}
             ${parts.map(getPartHelp).map(help => '  ' + help).join('\n')}
         `
@@ -103,4 +118,4 @@ class Dev extends Piece {
 
 }
 
-module.exports = Dev
+module.exports = Utils

@@ -3,6 +3,11 @@ var dedent  = require('dedent-js')
 
 class Polls extends Piece {
 
+
+    description() {
+        return 'Easy polls via reactions with live visual updates'
+    }
+
     /**
      * Map of numbers to their corresponding unicode keycap string
      */
@@ -22,6 +27,8 @@ class Polls extends Piece {
             this.makePoll(data.question, data.options, context.message.channel)
             // let options = data.options.join(' ').split(',').map(option => option.trim())
             // this.makePoll(data.question, options, context.message.channel)
+        }, {
+            description: 'Make a poll. E.g: poll "Is this bot cool?" Yes! Nah "Maybe..."'
         })
 
         /**

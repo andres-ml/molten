@@ -7,6 +7,10 @@ class Miscellaneous extends Piece {
         return ''
     }
 
+    description() {
+        return 'Miscellaneous goodies and functions'
+    }
+
     initialize() {
 
         /**
@@ -25,6 +29,8 @@ class Miscellaneous extends Piece {
                         file: json.img
                     })
                 })
+        }, {
+            description: 'Sends a random xkcd comic'
         })
 
         /**
@@ -33,6 +39,8 @@ class Miscellaneous extends Piece {
         this.addCommand('roll [options]*', (data, context) => {
             let random = Math.floor(Math.random() * data.options.length)
             context.message.channel.send(data.options[random])
+        }, {
+            description: 'Roll to get any of the [options]'
         })
 
         /**
@@ -51,6 +59,8 @@ class Miscellaneous extends Piece {
 
             let random = min + Math.floor( Math.random() * (max + 1 - min) )
             context.message.channel.send(random)
+        }, {
+            description: 'Rolls a dice from 1 to X (dice X) or from X to Y (dice X Y)'
         })
 
     }

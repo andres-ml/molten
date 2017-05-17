@@ -1,4 +1,0 @@
-* finish project skeleton for a modular discord bot
-* make sg bot
-* upload somewhere (commander: separately or not?)
-* improve commander readability
