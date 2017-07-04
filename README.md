@@ -102,6 +102,21 @@ For example, if we have the command `sum <foo> [bar] [baz]*`:
 
 `data` also holds a special `_all` key that holds all the arguments as an array.
 
+#### Command options
+
+* `description` command description used to display bot help
+* `auth` command permissions/auth options. It can contain an array of role names `roles`, which will be checked against the user who runs the command. If he has at least any of the specified roles, the command will be executed properly; otherwise it will fail.
+
+For example:
+```js
+this.addCommand('ban <user>', callback, {
+    description: 'Bans user <user>',
+    auth: {
+        roles: ['admin']
+    }
+})
+```
+
 ### Prefixing
 
 Defining a non-empty `key()` automatically prepends that key to all of the pieces' (and subpieces') commands.
@@ -143,9 +158,6 @@ Nesting can also be used without defining a key, and will work as if all the pie
 ---
 
 ## Q/A
->Q: What about per-command or per-piece permissions?
-
-A: Not supported as of now.
 >Q: Yet another discord.js bot? Aren't there better ones already out there?
 
 A: I wanted to make one myself.
