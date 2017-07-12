@@ -37,8 +37,8 @@ class Bot {
     build() {
         this.clearEvents()
         this.commander = new Commander()
-        this.pieces = this.loadPieces('./pieces')
-        this.pieces.forEach(piece => this.loadCommands(piece))
+        this.parts = this.loadPieces('./pieces')
+        this.parts.forEach(piece => this.loadCommands(piece))
     }
 
     loadPieces(directory) {
