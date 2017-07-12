@@ -10,19 +10,17 @@ class Bot {
 
     initialize() {
         this.bot = new Discord.Client()
-
-        this.build()
-
-        this.bot.on('message', message => {
-            if (message.content.indexOf(this.config.prefix) === 0) {
-                let command = message.content.substring(this.config.prefix.length)
-                this.run(command, message)
-            }
-        })
-
         this.bot.login(this.config.auth)
 
-        // this.bot.on('ready', () => this.bot.user.setGame('hi'))
+        this.bot.on('ready', () => {
+            this.build()
+            this.bot.on('message', message => {
+                if (message.content.indexOf(this.config.prefix) === 0) {
+                    let command = message.content.substring(this.config.prefix.length)
+                    this.run(command, message)
+                }
+            })
+        })
     }
 
     run(command, message) {
@@ -48,7 +46,9 @@ class Bot {
         try {
             parts = this.loadDirectory(directory)
         } catch (error) {
-            console.log(directory, error)
+            if (error.code !== 'ENOENT') {
+                console.log(directory, error)
+            }
         }
         return parts
     }
@@ -110,12 +110,20 @@ class Bot {
     }
 
     addListener(eventName, callback) {
+        let eventCallback = function() {
+            try {
+                callback.apply(this, arguments)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         if (!(eventName in this.events)) {
             this.events[eventName] = []
         }
 
-        this.events[eventName].push(callback)
-        this.bot.on(eventName, callback)
+        this.events[eventName].push(eventCallback)
+        this.bot.on(eventName, eventCallback)
     }
 
 }
