@@ -80,11 +80,13 @@ class Utils extends Piece {
         let piece = this.dispatcher
 
         if (pieces.length > 0) {
-            let child = piece.parts.find(piece => piece.piece.key() === pieces[0])
+            let children = this.flatten(piece).piecesWithKey
+            let child = children.find(piece => piece.piece.key() === pieces[0])
             while (child) {
                 pieceKeys.push(pieces.shift())
                 piece = child
-                child = piece.parts.find(piece => piece.piece.key() === pieces[0])
+                children = this.flatten(piece).piecesWithKey
+                child = children.find(piece => piece.piece.key() === pieces[0])
             }
         }
 
@@ -92,9 +94,10 @@ class Utils extends Piece {
     }
 
     buildPieceHelp(prefix, keys, piece) {
-        let commands = this.flattenCommands(piece)
+        let data = this.flatten(piece)
 
-        let piecesWithKey = piece.parts.filter(piece => piece.piece.key())
+        let commands = data.commands
+        let piecesWithKey = data.piecesWithKey
 
         let keysPrefix = keys.map(key => key + ' ').join('')
 
@@ -121,16 +124,22 @@ class Utils extends Piece {
         `
     }
 
-    flattenCommands(piece) {
+    flatten(piece) {
         let commands = 'piece' in piece ? piece.piece.getCommands() : []
+        let piecesWithKey = piece.parts.filter(piece => piece.piece.key())
 
         piece.parts
             .filter(piece => !piece.piece.key())
             .forEach(piece => {
-                commands = commands.concat(this.flattenCommands(piece))
+                let data = this.flatten(piece)
+                commands.push.apply(commands, data.commands)
+                commands.push.apply(piecesWithKey, data.piecesWithKey)
             })
 
-        return commands
+        return {
+            commands: commands,
+            piecesWithKey: piecesWithKey
+        }
     }
 
 }
