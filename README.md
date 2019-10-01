@@ -1,4 +1,3 @@
-![asd](https://u.nya.is/ukssdv.png)
 # molten
 
 discord.js-based modular Discord bot
@@ -42,7 +41,7 @@ class MyPiece extends Piece {
 
 }
 
-module.exports = Miscellaneous
+module.exports = MyPiece
 ```
 ### Adding commands
 
